@@ -20,4 +20,10 @@ public partial class Customer
     public DateTime CreatedAt { get; set; }
 
     public int Status { get; set; }
+
+    public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+
+    public virtual ICollection<Child> Children { get; set; } = new List<Child>();
+
+    public virtual ICollection<VaccinesTracking> VaccinesTrackings { get; set; } = new List<VaccinesTracking>();
 }

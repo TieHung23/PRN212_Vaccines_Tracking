@@ -14,4 +14,6 @@ public partial class VaccineDetail
     public long Quantity { get; set; }
 
     public int Status { get; set; }
+
+    public virtual Vaccine Vaccine { get; set; } = null!;
 }

@@ -16,4 +16,14 @@ public partial class VaccinesTracking
     public int ParentId { get; set; }
 
     public int BookingId { get; set; }
+
+    public virtual Booking Booking { get; set; } = null!;
+
+    public virtual Child Child { get; set; } = null!;
+
+    public virtual ICollection<VaccinesTracking> InversePrevious { get; set; } = new List<VaccinesTracking>();
+
+    public virtual Customer Parent { get; set; } = null!;
+
+    public virtual VaccinesTracking Previous { get; set; } = null!;
 }
