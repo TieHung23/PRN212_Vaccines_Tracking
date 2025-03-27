@@ -17,22 +17,22 @@ namespace Repositories
         }
         public List<Child> GetAll()
         {
-            return context.Children.AsNoTracking().ToList();
+            return context.Children.Where( x => x.Status == 1).ToList();
         }
 
         public List<Child> GetByCustomerId( int id )
         {
-            return context.Children.Include( x => x.Parent ).Where( x => x.ParentId == id ).ToList();
+            return context.Children.Include( x => x.Parent ).Where( x => x.ParentId == id && x.Status == 1).ToList();
         }
 
         public List<Child> GetChildByName( string name )
         {
-            return context.Children.Where( x => x.Name.Contains( name ) ).ToList();
+            return context.Children.Where( x => x.Name.Contains( name ) && x.Status == 1).ToList();
         }
 
         public Child GetChildById( int id )
         {
-            return context.Children.Include( x => x.Parent ).FirstOrDefault( x => x.Id == id )!;
+            return context.Children.Include( x => x.Parent).Where( x => x.Status == 1).FirstOrDefault( x => x.Id == id )!;
         }
     }
 }

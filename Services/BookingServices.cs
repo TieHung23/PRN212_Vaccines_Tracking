@@ -13,11 +13,13 @@ namespace Services
     {
         BookingRepository bookingRepository;
         VaccinesTrackingServices vaccinesTrackingServices;
-        ChildrenServices childrenServices;
-        public void AddBooking( Booking booking )
+        public void AddBooking( Booking booking, DateTime vaccinationDate )
         {
             bookingRepository = new BookingRepository();
-            bookingRepository.AddBooking( booking );
+            vaccinesTrackingServices = new VaccinesTrackingServices();
+
+
+            bookingRepository.AddBooking( booking, vaccinationDate );
         }
     }
 }
