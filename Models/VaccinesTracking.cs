@@ -17,6 +17,10 @@ public partial class VaccinesTracking
 
     public int BookingId { get; set; }
 
+    public int VaccineId { get; set; }
+
+    public int Status { get; set; }
+
     public virtual Booking Booking { get; set; } = null!;
 
     public virtual Child Child { get; set; } = null!;
@@ -26,4 +30,6 @@ public partial class VaccinesTracking
     public virtual Customer Parent { get; set; } = null!;
 
     public virtual VaccinesTracking Previous { get; set; } = null!;
+
+    public virtual Vaccine Vaccine { get; set; } = null!;
 }
