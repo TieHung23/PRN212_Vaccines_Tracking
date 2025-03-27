@@ -12,4 +12,8 @@ public partial class Vaccine
     public decimal Price { get; set; }
 
     public string Description { get; set; } = null!;
+
+    public virtual ICollection<VaccineDetail> VaccineDetails { get; set; } = new List<VaccineDetail>();
+
+    public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 }

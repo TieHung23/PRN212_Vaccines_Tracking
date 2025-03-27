@@ -5,22 +5,18 @@ using Microsoft.Extensions.Configuration;
 
 namespace Models;
 
-public partial class Prn212VaccinesTrackingContext : DbContext
+public partial class VaccineTrackingContext : DbContext
 {
-    public Prn212VaccinesTrackingContext()
+    public VaccineTrackingContext()
     {
     }
 
-    public Prn212VaccinesTrackingContext(DbContextOptions<Prn212VaccinesTrackingContext> options)
+    public VaccineTrackingContext(DbContextOptions<VaccineTrackingContext> options)
         : base(options)
     {
     }
 
     public virtual DbSet<Booking> Bookings { get; set; }
-
-    public virtual DbSet<BookingChild> BookingChildren { get; set; }
-
-    public virtual DbSet<BookingVaccine> BookingVaccines { get; set; }
 
     public virtual DbSet<Child> Children { get; set; }
 
@@ -47,11 +43,11 @@ public partial class Prn212VaccinesTrackingContext : DbContext
     {
         modelBuilder.Entity<Booking>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Booking__3213E83FF01F6EE2");
+            entity.HasKey(e => e.Id).HasName("PK__Booking__3213E83F0E2F987E");
 
             entity.ToTable("Booking");
 
-            entity.HasIndex(e => e.Id, "UQ__Booking__3213E83EB8810537").IsUnique();
+            entity.HasIndex(e => e.Id, "UQ__Booking__3213E83EF604E3FA").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CreatedAt)
@@ -63,35 +59,58 @@ public partial class Prn212VaccinesTrackingContext : DbContext
                 .HasColumnName("finalPrice");
             entity.Property(e => e.ParentId).HasColumnName("parentId");
             entity.Property(e => e.Status).HasColumnName("status");
-        });
 
-        modelBuilder.Entity<BookingChild>(entity =>
-        {
-            entity.HasKey(e => new { e.BookingId, e.ChildId }).HasName("PK__Booking___04F3A9918AF02742");
+            entity.HasOne(d => d.Parent).WithMany(p => p.Bookings)
+                .HasForeignKey(d => d.ParentId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Booking__parentI__619B8048");
 
-            entity.ToTable("Booking_Child");
+            entity.HasMany(d => d.Children).WithMany(p => p.Bookings)
+                .UsingEntity<Dictionary<string, object>>(
+                    "BookingChild",
+                    r => r.HasOne<Child>().WithMany()
+                        .HasForeignKey("ChildId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK__Booking_C__child__656C112C"),
+                    l => l.HasOne<Booking>().WithMany()
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK__Booking_C__booki__6477ECF3"),
+                    j =>
+                    {
+                        j.HasKey("BookingId", "ChildId").HasName("PK__Booking___04F3A991D3409CFD");
+                        j.ToTable("Booking_Child");
+                        j.IndexerProperty<int>("BookingId").HasColumnName("bookingId");
+                        j.IndexerProperty<int>("ChildId").HasColumnName("childId");
+                    });
 
-            entity.Property(e => e.BookingId).HasColumnName("bookingId");
-            entity.Property(e => e.ChildId).HasColumnName("childId");
-        });
-
-        modelBuilder.Entity<BookingVaccine>(entity =>
-        {
-            entity.HasKey(e => new { e.BookingId, e.VaccineId }).HasName("PK__Booking___8ACEE812AB92C763");
-
-            entity.ToTable("Booking_Vaccine");
-
-            entity.Property(e => e.BookingId).HasColumnName("bookingId");
-            entity.Property(e => e.VaccineId).HasColumnName("vaccineId");
+            entity.HasMany(d => d.Vaccines).WithMany(p => p.Bookings)
+                .UsingEntity<Dictionary<string, object>>(
+                    "BookingVaccine",
+                    r => r.HasOne<Vaccine>().WithMany()
+                        .HasForeignKey("VaccineId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK__Booking_V__vacci__6383C8BA"),
+                    l => l.HasOne<Booking>().WithMany()
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK__Booking_V__booki__628FA481"),
+                    j =>
+                    {
+                        j.HasKey("BookingId", "VaccineId").HasName("PK__Booking___8ACEE8121D21810C");
+                        j.ToTable("Booking_Vaccine");
+                        j.IndexerProperty<int>("BookingId").HasColumnName("bookingId");
+                        j.IndexerProperty<int>("VaccineId").HasColumnName("vaccineId");
+                    });
         });
 
         modelBuilder.Entity<Child>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Child__3213E83F07CC5615");
+            entity.HasKey(e => e.Id).HasName("PK__Child__3213E83FE6A248C6");
 
             entity.ToTable("Child");
 
-            entity.HasIndex(e => e.Id, "UQ__Child__3213E83E1FF514EB").IsUnique();
+            entity.HasIndex(e => e.Id, "UQ__Child__3213E83E3E43936D").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.DateOfBirth)
@@ -108,15 +127,20 @@ public partial class Prn212VaccinesTrackingContext : DbContext
                 .HasColumnName("name");
             entity.Property(e => e.ParentId).HasColumnName("parentId");
             entity.Property(e => e.Status).HasColumnName("status");
+
+            entity.HasOne(d => d.Parent).WithMany(p => p.Children)
+                .HasForeignKey(d => d.ParentId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Child__parentId__60A75C0F");
         });
 
         modelBuilder.Entity<Customer>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Customer__3213E83FD88348B1");
+            entity.HasKey(e => e.Id).HasName("PK__Customer__3213E83FEB24C6F8");
 
             entity.ToTable("Customer");
 
-            entity.HasIndex(e => e.Id, "UQ__Customer__3213E83EE618B659").IsUnique();
+            entity.HasIndex(e => e.Id, "UQ__Customer__3213E83E0981CB5B").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CreatedAt)
@@ -148,11 +172,11 @@ public partial class Prn212VaccinesTrackingContext : DbContext
 
         modelBuilder.Entity<Vaccine>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Vaccine__3213E83FB72F8B8A");
+            entity.HasKey(e => e.Id).HasName("PK__Vaccine__3213E83F3F0DFDEA");
 
             entity.ToTable("Vaccine");
 
-            entity.HasIndex(e => e.Id, "UQ__Vaccine__3213E83EC42DF7B5").IsUnique();
+            entity.HasIndex(e => e.Id, "UQ__Vaccine__3213E83EBE2CA569").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Description)
@@ -170,7 +194,7 @@ public partial class Prn212VaccinesTrackingContext : DbContext
 
         modelBuilder.Entity<VaccineDetail>(entity =>
         {
-            entity.HasKey(e => e.VaccineDetailsId).HasName("PK__VaccineD__FC7B323FFF6F72F0");
+            entity.HasKey(e => e.VaccineDetailsId).HasName("PK__VaccineD__FC7B323FAE7CF7F6");
 
             entity.Property(e => e.VaccineDetailsId).HasColumnName("vaccineDetailsId");
             entity.Property(e => e.EntryDate)
@@ -180,15 +204,20 @@ public partial class Prn212VaccinesTrackingContext : DbContext
             entity.Property(e => e.Quantity).HasColumnName("quantity");
             entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.VaccineId).HasColumnName("vaccineId");
+
+            entity.HasOne(d => d.Vaccine).WithMany(p => p.VaccineDetails)
+                .HasForeignKey(d => d.VaccineId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__VaccineDe__vacci__5FB337D6");
         });
 
         modelBuilder.Entity<VaccinesTracking>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Vaccines__3213E83F649F48A9");
+            entity.HasKey(e => e.Id).HasName("PK__Vaccines__3213E83FF8F8C386");
 
             entity.ToTable("VaccinesTracking");
 
-            entity.HasIndex(e => e.Id, "UQ__Vaccines__3213E83E74234945").IsUnique();
+            entity.HasIndex(e => e.Id, "UQ__Vaccines__3213E83E67234739").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.BookingId).HasColumnName("bookingId");
@@ -198,6 +227,26 @@ public partial class Prn212VaccinesTrackingContext : DbContext
                 .HasColumnName("dateVaccination");
             entity.Property(e => e.ParentId).HasColumnName("parentId");
             entity.Property(e => e.PreviousId).HasColumnName("previousId");
+
+            entity.HasOne(d => d.Booking).WithMany(p => p.VaccinesTrackings)
+                .HasForeignKey(d => d.BookingId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__VaccinesT__booki__693CA210");
+
+            entity.HasOne(d => d.Child).WithMany(p => p.VaccinesTrackings)
+                .HasForeignKey(d => d.ChildId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__VaccinesT__child__6754599E");
+
+            entity.HasOne(d => d.Parent).WithMany(p => p.VaccinesTrackings)
+                .HasForeignKey(d => d.ParentId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__VaccinesT__paren__68487DD7");
+
+            entity.HasOne(d => d.Previous).WithMany(p => p.InversePrevious)
+                .HasForeignKey(d => d.PreviousId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__VaccinesT__previ__66603565");
         });
 
         OnModelCreatingPartial(modelBuilder);

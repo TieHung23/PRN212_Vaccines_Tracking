@@ -79,6 +79,51 @@ CREATE TABLE [VaccinesTracking] (
 );
 GO
 
+ALTER TABLE [VaccineDetails]
+ADD FOREIGN KEY([vaccineId]) REFERENCES [Vaccine]([id])
+ON UPDATE NO ACTION ON DELETE NO ACTION;
+GO
+ALTER TABLE [Child]
+ADD FOREIGN KEY([parentId]) REFERENCES [Customer]([id])
+ON UPDATE NO ACTION ON DELETE NO ACTION;
+GO
+ALTER TABLE [Booking]
+ADD FOREIGN KEY([parentId]) REFERENCES [Customer]([id])
+ON UPDATE NO ACTION ON DELETE NO ACTION;
+GO
+ALTER TABLE [Booking_Vaccine]
+ADD FOREIGN KEY([bookingId]) REFERENCES [Booking]([id])
+ON UPDATE NO ACTION ON DELETE NO ACTION;
+GO
+ALTER TABLE [Booking_Vaccine]
+ADD FOREIGN KEY([vaccineId]) REFERENCES [Vaccine]([id])
+ON UPDATE NO ACTION ON DELETE NO ACTION;
+GO
+ALTER TABLE [Booking_Child]
+ADD FOREIGN KEY([bookingId]) REFERENCES [Booking]([id])
+ON UPDATE NO ACTION ON DELETE NO ACTION;
+GO
+ALTER TABLE [Booking_Child]
+ADD FOREIGN KEY([childId]) REFERENCES [Child]([id])
+ON UPDATE NO ACTION ON DELETE NO ACTION;
+GO
+ALTER TABLE [VaccinesTracking]
+ADD FOREIGN KEY([previousId]) REFERENCES [VaccinesTracking]([id])
+ON UPDATE NO ACTION ON DELETE NO ACTION;
+GO
+ALTER TABLE [VaccinesTracking]
+ADD FOREIGN KEY([childId]) REFERENCES [Child]([id])
+ON UPDATE NO ACTION ON DELETE NO ACTION;
+GO
+ALTER TABLE [VaccinesTracking]
+ADD FOREIGN KEY([parentId]) REFERENCES [Customer]([id])
+ON UPDATE NO ACTION ON DELETE NO ACTION;
+GO
+ALTER TABLE [VaccinesTracking]
+ADD FOREIGN KEY([bookingId]) REFERENCES [Booking]([id])
+ON UPDATE NO ACTION ON DELETE NO ACTION;
+GO
+
 -- Foreign Key Constraints remain the same as in your original script
 
 -- Insert Test Data
