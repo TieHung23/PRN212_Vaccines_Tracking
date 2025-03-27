@@ -30,6 +30,7 @@ CREATE TABLE [Vaccine] (
     [name] VARCHAR(100) NOT NULL,
     [price] MONEY NOT NULL,
     [description] VARCHAR(500) NOT NULL,
+    [dosesTimes] INTEGER NOT NULL,
     PRIMARY KEY([id])
 );
 GO
@@ -69,13 +70,15 @@ CREATE TABLE [Booking_Child] (
 GO
 
 CREATE TABLE [VaccinesTracking] (
-    [id] INTEGER IDENTITY(1,1) NOT NULL UNIQUE,
-    [previousId] INTEGER NOT NULL,
-    [dateVaccination] DATETIME NOT NULL,
-    [childId] INTEGER NOT NULL,
-    [parentId] INTEGER NOT NULL,
-    [bookingId] INTEGER NOT NULL,
-    PRIMARY KEY([id])
+	[id] INTEGER IDENTITY(1,1) NOT NULL UNIQUE,
+	[previousId] INTEGER NOT NULL,
+	[dateVaccination] DATETIME NOT NULL,
+	[childId] INTEGER NOT NULL,
+	[parentId] INTEGER NOT NULL,
+	[bookingId] INTEGER NOT NULL,
+	[vaccineId] INTEGER NOT NULL,
+	[status] INTEGER NOT NULL,
+	PRIMARY KEY([id])
 );
 GO
 
@@ -123,6 +126,10 @@ ALTER TABLE [VaccinesTracking]
 ADD FOREIGN KEY([bookingId]) REFERENCES [Booking]([id])
 ON UPDATE NO ACTION ON DELETE NO ACTION;
 GO
+ALTER TABLE [VaccinesTracking]
+ADD FOREIGN KEY([vaccineId]) REFERENCES [Vaccine]([id])
+ON UPDATE NO ACTION ON DELETE NO ACTION;
+GO
 
 -- Foreign Key Constraints remain the same as in your original script
 
@@ -138,11 +145,11 @@ GO
 
 -- Vaccines
 SET IDENTITY_INSERT [Vaccine] OFF;
-INSERT INTO [Vaccine] ([name], [price], [description])
+INSERT INTO [Vaccine] ([name], [price], [description],[dosesTimes])
 VALUES 
-('MMR Vaccine', 89.99, 'Measles, Mumps, and Rubella combination vaccine'),
-('Polio Vaccine', 65.50, 'Inactivated Polio Vaccine (IPV)'),
-('Hepatitis B Vaccine', 45.75, 'Hepatitis B prevention vaccine');
+('MMR Vaccine', 89.99, 'Measles, Mumps, and Rubella combination vaccine',1),
+('Polio Vaccine', 65.50, 'Inactivated Polio Vaccine (IPV)',2),
+('Hepatitis B Vaccine', 45.75, 'Hepatitis B prevention vaccine',3);
 GO
 
 -- Children
@@ -190,11 +197,11 @@ GO
 
 -- VaccinesTracking
 SET IDENTITY_INSERT [VaccinesTracking] OFF;
-INSERT INTO [VaccinesTracking] ([previousId], [dateVaccination], [childId], [parentId], [bookingId])
+INSERT INTO [VaccinesTracking] ([previousId], [dateVaccination], [childId], [parentId], [bookingId], [vaccineId], [status])
 VALUES 
-(1, GETDATE(), 1, 1, 1),
-(2, GETDATE(), 2, 2, 2),
-(3, GETDATE(), 3, 3, 3);
+(1, GETDATE(), 1, 1, 1,1,1),
+(2, GETDATE(), 2, 2, 2,2,0),
+(3, GETDATE(), 3, 3, 3,3,1);
 GO
 
 -- Optional: Verify inserted data

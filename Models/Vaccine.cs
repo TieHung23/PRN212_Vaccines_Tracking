@@ -13,7 +13,11 @@ public partial class Vaccine
 
     public string Description { get; set; } = null!;
 
+    public int DosesTimes { get; set; }
+
     public virtual ICollection<VaccineDetail> VaccineDetails { get; set; } = new List<VaccineDetail>();
+
+    public virtual ICollection<VaccinesTracking> VaccinesTrackings { get; set; } = new List<VaccinesTracking>();
 
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 }
