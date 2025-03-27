@@ -71,7 +71,7 @@ GO
 
 CREATE TABLE [VaccinesTracking] (
 	[id] INTEGER IDENTITY(1,1) NOT NULL UNIQUE,
-	[previousId] INTEGER NOT NULL,
+	[previousId] INTEGER,
 	[dateVaccination] DATETIME NOT NULL,
 	[childId] INTEGER NOT NULL,
 	[parentId] INTEGER NOT NULL,

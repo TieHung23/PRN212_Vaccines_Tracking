@@ -7,7 +7,7 @@ public partial class VaccinesTracking
 {
     public int Id { get; set; }
 
-    public int PreviousId { get; set; }
+    public int? PreviousId { get; set; }
 
     public DateTime DateVaccination { get; set; }
 
@@ -29,7 +29,7 @@ public partial class VaccinesTracking
 
     public virtual Customer Parent { get; set; } = null!;
 
-    public virtual VaccinesTracking Previous { get; set; } = null!;
+    public virtual VaccinesTracking? Previous { get; set; }
 
     public virtual Vaccine Vaccine { get; set; } = null!;
 }

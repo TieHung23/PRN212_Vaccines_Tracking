@@ -200,7 +200,7 @@ namespace WPF
                 FinalPrice = decimal.Parse( txtTotalPrice.Text, NumberStyles.Currency, CultureInfo.GetCultureInfo( "en-US" ) ),
             };
 
-            bookingServices.AddBooking( booking );
+            bookingServices.AddBooking( booking, ( DateTime )  DateVaccination  );
 
             MessageBox.Show( "Booking added successfully" );
             return;

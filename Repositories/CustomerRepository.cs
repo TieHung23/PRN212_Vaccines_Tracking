@@ -19,12 +19,12 @@ namespace Repositories
 
         public List<Customer> GetAll()
         {
-            return context.Customers.Include( x => x.Children ).ToList();
+            return context.Customers.Include( x => x.Children ).Where( x => x.Status == 1).ToList();
         }
 
         public List<Customer> GetAllByEmailAddress( string email )
         {
-            return context.Customers.Include( x => x.Children ).Where( x => x.Email.Contains( email ) ).ToList();
+            return context.Customers.Include( x => x.Children ).Where( x => x.Email.Contains( email ) && x.Status == 1).ToList();
         }
     }
 }

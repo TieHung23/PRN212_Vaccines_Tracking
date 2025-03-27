@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,11 +12,13 @@ namespace Repositories
     public class BookingRepository
     {
         private readonly VaccineTrackingContext context;
+        private readonly VaccinesTrackingRepository vaccinesTrackingRepository;
         public BookingRepository(  )
         {
             context = new VaccineTrackingContext();
+            vaccinesTrackingRepository = new VaccinesTrackingRepository();
         }
-        public void AddBooking( Booking booking )
+        public void AddBooking( Booking booking , DateTime vaccinationDate)
         {
             List<Child> children = new List<Child>();
             List<Vaccine> vaccines = new List<Vaccine>();
@@ -36,7 +39,12 @@ namespace Repositories
             booking.Children = children;
             booking.ParentId = parent.Id;
             context.Bookings.Add( booking );
+
             context.SaveChanges();
+
+            var result = context.Bookings.OrderByDescending( x => x.CreatedAt ).FirstOrDefault();
+
+            vaccinesTrackingRepository.GenToVaccinesTracking( result, vaccinationDate );
         }
 
     }
