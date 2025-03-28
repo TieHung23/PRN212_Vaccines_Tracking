@@ -53,6 +53,29 @@
                     </DataGrid>
                 </StackPanel>
             </TabItem>
+            <TabItem Header="Vaccine">
+                
+            </TabItem>
+            <TabItem Header="Booking">
+                <StackPanel>
+                    <Button Content="Add Booking" Click="btnAddBooking_Click" Margin="5"/>
+                    <!--<Button Content="Update Child" Click="btnUpdateChild_Click" Margin="5"/>-->
+                    <!--<Button Content="Delete Child" Click="btnDeleteChild_Click" Margin="5"/>-->
+                    <!--<Label Content="Search"/>-->
+                    <!--<TextBox x:Name="txtBookSearch" TextChanged="txtChildSearch_TextChanged"/>-->
+                    <DataGrid x:Name="DGBooking" AutoGenerateColumns="False" Margin="5">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="Auto"/>
+                            <DataGridTextColumn Header="Parent" Binding="{Binding ParentName}" Width="Auto"/>
+                            <DataGridTextColumn Header="Children" Binding="{Binding ChildrenName}" Width="Auto"/>
+                            <DataGridTextColumn Header="Vaccines" Binding="{Binding VaccineNames}" Width="Auto"/>
+                            <DataGridTextColumn Header="FinalPrice" Binding="{Binding FinalPrice}" Width="Auto"/>
+                            <DataGridTextColumn Header="CreatedAt" Binding="{Binding CreatedAt}" Width="Auto"/>
+                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="Auto"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>

@@ -20,15 +20,18 @@ namespace WPF
     {
         private readonly CustomerServices _customerService;
         private readonly ChildrenServices _childrenService;
+        private readonly BookingServices _bookingServices;
         public MainWindow()
         {
             InitializeComponent();
             _customerService = new CustomerServices();
             _childrenService = new ChildrenServices();
+            _bookingServices = new BookingServices();
 
             LoadCustomer(_customerService.GetAllForAdmin());
             LoadChildren(_childrenService.GetAllForAdmin());
             cbParent.ItemsSource = _customerService.GetAllForAdmin();
+            LoadBookings();
         }
 
         private void LoadCustomer(List<Customer> customers)
@@ -39,6 +42,26 @@ namespace WPF
         private void LoadChildren(List<Child> children)
         {
             DGChildren.ItemsSource = children;
+        }
+
+        private void LoadBookings()
+        {
+            var bookings = _bookingServices.GetBookingForAdmin();
+            var displayBookings = bookings.Select(b => new
+            {
+                Id = b.Id,
+                ParentName = b.Parent?.Username,
+                VaccineNames = b.Vaccines != null
+                                    ? string.Join(", ", b.Vaccines.Select(v => v.Name))
+                                    : string.Empty,
+                ChildrenName = b.Children != null
+                                    ? string.Join(", ", b.Children.Select(c => c.Name))
+                                    : string.Empty,
+                FinalPrice = b.FinalPrice,
+                CreatedAt = b.CreatedAt,
+                Status = b.Status,
+            });
+            DGBooking.ItemsSource = displayBookings;
         }
 
         private void btnAddCustomer_Click(object sender, RoutedEventArgs e)
@@ -262,6 +285,13 @@ namespace WPF
         {
             string search = txtChildSearch.Text;
             LoadChildren(_childrenService.SearchChild(search));
+        }
+
+        private void btnAddBooking_Click(object sender, RoutedEventArgs e)
+        {
+            BookingWindow bookingWindow = new BookingWindow();
+            bookingWindow.Show();
+            this.Close();
         }
 
         //private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -9,21 +9,21 @@ namespace Repositories
 {
     public class VaccinesRepository
     {
-        private readonly Prn212VaccinesTracking2Context context;
+        private readonly Prn212VaccinesTracking2Context _context;
 
         public VaccinesRepository()
         {
-            context = new Prn212VaccinesTracking2Context();
+            _context = new Prn212VaccinesTracking2Context();
         }
 
         public List<Vaccine> GetAll()
         {
-            return context.Vaccines.ToList();
+            return _context.Vaccines.ToList();
         }
 
         public List<Vaccine> GetVaccinesByName( string name )
         {
-            return context.Vaccines.Where( x => x.Name.Contains( name ) ).ToList();
+            return _context.Vaccines.Where( x => x.Name.Contains( name ) ).ToList();
         }
     }
 }

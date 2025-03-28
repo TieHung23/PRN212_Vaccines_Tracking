@@ -47,5 +47,24 @@ namespace Repositories
             vaccinesTrackingRepository.GenToVaccinesTracking( result, vaccinationDate );
         }
 
+        public List<Booking> GetBookings()
+        {
+            return context.Bookings
+                          .Include(x => x.Parent)
+                          .Include(x => x.Children)
+                          .Include(x => x.Vaccines)
+                          .ToList();
+        }
+
+        public List<Booking> GetBookingsByParent(int parentId)
+        {
+            return context.Bookings
+                          .Include(x => x.Parent)
+                          .Include(x => x.Children)
+                          .Include(x => x.Vaccines)
+                          .Where(x => x.ParentId == parentId)
+                          .ToList();
+        }
+
     }
 }
