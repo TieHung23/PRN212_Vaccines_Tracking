@@ -9,8 +9,10 @@ namespace Validate
 {
     public class Validate : IValidate
     {
-        private const string emailRegex = @"^[a-zA-Z0-9._%+-]+@gmail\.com$";
-        private const string phoneRegex = @"^[0][0-9 ]{8,9}$";
+        //private const string emailRegex = @"^[a-zA-Z0-9._%+-]+@gmail\.com$";
+        private const string emailRegex = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+        //private const string phoneRegex = @"^[0][0-9 ]{8,9}$";
+        private const string phoneRegex = @"^(0|\+84)(3[2-9]|5[6|8|9]|7[06-9]|8[1-9]|9[0-9])[0-9]{7}$";
 
         public bool isDateTime( string str )
         {

@@ -7,6 +7,52 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-
+        <TabControl>
+            <TabItem Header="Customers">
+                <StackPanel>
+                    <Button Content="Add Customer" Click="btnAddCustomer_Click" Margin="5"/>
+                    <Button Content="Update Customer" Click="btnUpdateCustomer_Click" Margin="5"/>
+                    <Button Content="Delete Customer" Click="btnDeleteCustomer_Click" Margin="5"/>
+                    <Label Content="Search"/>
+                    <TextBox 
+                x:Name="txtCustomerSearch" TextChanged="txtCustomerSearch_TextChanged"/>
+                    <DataGrid x:Name="DGCustomer" AutoGenerateColumns="False" Margin="5">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="Auto"/>
+                            <DataGridTextColumn Header="Username" Binding="{Binding Username}" Width="100"/>
+                            <DataGridTextColumn Header="Password" Binding="{Binding Password}" Width="Auto"/>
+                            <DataGridTextColumn Header="DateOfBirth" Binding="{Binding DateOfBirth}" Width="100"/>
+                            <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="100"/>
+                            <DataGridTextColumn Header="Phone" Binding="{Binding Phone}" Width="100"/>
+                            <DataGridTextColumn Header="CreatedAt" Binding="{Binding CreatedAt}" Width="100"/>
+                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="Auto"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Child">
+                <StackPanel>
+                    <Button Content="Add Child" Click="btnAddChild_Click" Margin="5"/>
+                    <Button Content="Update Child" Click="btnUpdateChild_Click" Margin="5"/>
+                    <Button Content="Delete Child" Click="btnDeleteChild_Click" Margin="5"/>
+                    <Button Content="All" Click="SortAll" Margin="5"/>
+                    <ComboBox x:Name="cbParent" DisplayMemberPath="Username" SelectedValuePath="Id" SelectionChanged="cbParent_SelectionChanged"/>
+                    <Label Content="Search"/>
+                    <TextBox 
+                    x:Name="txtChildSearch" 
+                    TextChanged="txtChildSearch_TextChanged"/>
+                    <DataGrid x:Name="DGChildren" AutoGenerateColumns="False" Margin="5">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="Auto"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
+                            <DataGridTextColumn Header="Parent" Binding="{Binding Parent.Username}" Width="Auto"/>
+                            <DataGridTextColumn Header="DateOfBirth" Binding="{Binding DateOfBirth}" Width="Auto"/>
+                            <DataGridTextColumn Header="Gender" Binding="{Binding Gender}" Width="Auto"/>
+                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="Auto"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

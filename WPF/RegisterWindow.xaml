@@ -3,10 +3,39 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:WPF"
         mc:Ignorable="d"
         Title="RegisterWindow" Height="450" Width="800">
-    <Grid>
-        
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Username:" Grid.Row="0"/>
+        <TextBox Name="txtUsername" Grid.Row="1" Width="250"/>
+
+        <TextBlock Text="Password:" Grid.Row="2"/>
+        <PasswordBox Name="txtPassword" Grid.Row="3" Width="250"/>
+
+        <TextBlock Text="Date of Birth:" Grid.Row="4"/>
+        <DatePicker Name="dpDateOfBirth" Grid.Row="5" Width="250" DisplayDateEnd="{x:Static sys:DateTime.Today}"/>
+
+        <TextBlock Text="Email:" Grid.Row="6"/>
+        <TextBox Name="txtEmail" Grid.Row="7" Width="250"/>
+
+        <TextBlock Text="Phone:" Grid.Row="8"/>
+        <TextBox Name="txtPhone" Grid.Row="9" Width="250"/>
+
+        <Button Content="Register" Grid.Row="9" Click="Register_Click" Width="250" Margin="265,43,265,-50"/>
     </Grid>
 </Window>

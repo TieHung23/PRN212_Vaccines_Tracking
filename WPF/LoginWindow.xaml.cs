@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Services;
 using Validate;
 
 namespace WPF
@@ -23,11 +24,13 @@ namespace WPF
         private const string ADMIN_MAIL = "admin123@gmail.com";
         private const string ADMIN_PASS = "a";
         private readonly IValidate validate;
+        private readonly CustomerServices _customerSerivce;
 
         public LoginWindow()
         {
             InitializeComponent();
             validate = new Validate.Validate();
+            _customerSerivce = new CustomerServices();
         }
 
         private void btnLogin_Click( object sender, RoutedEventArgs e )
@@ -56,7 +59,13 @@ namespace WPF
             }
             else
             {
-                MessageBox.Show( "Login failed!" );
+                var customer = _customerSerivce.Login( email, pass );
+                if( customer != null )
+                {
+                    CustomerWindow customerWindow = new CustomerWindow();
+                    customerWindow.Show();
+                    this.Close();
+                }
             }
         }
 
