@@ -9,11 +9,11 @@ namespace Repositories
 {
     public class VaccinesRepository
     {
-        private readonly VaccineTrackingContext context;
+        private readonly Prn212VaccinesTracking2Context context;
 
         public VaccinesRepository()
         {
-            context = new VaccineTrackingContext();
+            context = new Prn212VaccinesTracking2Context();
         }
 
         public List<Vaccine> GetAll()

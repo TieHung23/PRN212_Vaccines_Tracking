@@ -9,7 +9,7 @@ namespace Repositories
 {
     public class VaccinesTrackingRepository
     {
-        private readonly VaccineTrackingContext context;
+        private readonly Prn212VaccinesTracking2Context context;
 
         public VaccinesTrackingRepository()
         {
