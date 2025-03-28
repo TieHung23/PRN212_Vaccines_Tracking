@@ -48,7 +48,8 @@ namespace WPF
             }
             else
             {
-                dgUsers.ItemsSource = ( System.Collections.IEnumerable? ) _cus;
+                //dgUsers.ItemsSource = ( System.Collections.IEnumerable? ) _cus;
+                dgUsers.ItemsSource = new List<Customer> { _cus };
                 ParentNameTextBlock.Text = $"   • {_cus.Username}";
             }
         }

@@ -25,15 +25,18 @@ namespace WPF
         public Customer Customer { get; set; }
         private readonly CustomerServices _customerServices;
         private readonly ChildrenServices _childrenServices;
+        private readonly BookingServices _bookingServices;
         public CustomerWindow(Customer customer)
         {
             InitializeComponent();
             _customerServices = new CustomerServices();
             _childrenServices = new ChildrenServices();
+            _bookingServices = new BookingServices();
             Customer = customer;
             DataContext = this;
             LoadProfile();
             LoadChildren();
+            LoadBooking();
         }
 
         private void LoadProfile()
@@ -51,6 +54,28 @@ namespace WPF
         private void LoadChildren()
         {
             DGChildren.ItemsSource = _childrenServices.GetByCustomerId(Customer.Id);
+        }
+
+        private void LoadBooking()
+        {
+            var bookings = _bookingServices.GetBookingByParent(Customer.Id);
+
+            var displayBookings = bookings.Select(b => new
+            {
+                Id = b.Id,
+                ParentName = b.Parent?.Username,
+                VaccineNames = b.Vaccines != null
+                                    ? string.Join(", ", b.Vaccines.Select(v => v.Name))
+                                    : string.Empty,
+                ChildrenName = b.Children != null
+                                    ? string.Join(", ", b.Children.Select(c => c.Name))
+                                    : string.Empty,
+                FinalPrice = b.FinalPrice,
+                CreatedAt = b.CreatedAt,
+                Status = b.Status,
+            });
+
+            DGBooking.ItemsSource = displayBookings;
         }
 
         private void EditProfile_Click(object sender, RoutedEventArgs e)
@@ -181,6 +206,11 @@ namespace WPF
             DGChildren.ItemsSource = _childrenServices.SearchChild(search).Where(x => x.ParentId == Customer.Id);
         }
 
-        
+        private void btnAddBooking_Click(object sender, RoutedEventArgs e)
+        {
+            BookingWindow bookingWindow = new BookingWindow(Customer);
+            bookingWindow.Show();
+            this.Close();
+        }
     }
 }
