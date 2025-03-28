@@ -11,7 +11,7 @@ public partial class Customer
 
     public string Password { get; set; } = null!;
 
-    public string DateOfBirth { get; set; } = null!;
+    public DateTime DateOfBirth { get; set; }
 
     public string Email { get; set; } = null!;
 

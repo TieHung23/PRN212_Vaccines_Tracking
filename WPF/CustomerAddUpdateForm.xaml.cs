@@ -13,45 +13,60 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Models;
-using Services;
 using Validate;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace WPF
 {
     /// <summary>
-    /// Interaction logic for RegisterWindow.xaml
+    /// Interaction logic for CustomerAddUpdateForm.xaml
     /// </summary>
-    public partial class RegisterWindow : Window
+    public partial class CustomerAddUpdateForm : Window
     {
+        private Customer _customer;
+        private bool _isNew;
         private readonly IValidate _validate;
-        private readonly CustomerServices _customerServices;
-        public RegisterWindow()
+        public Customer Customer { get { return _customer; } }
+        public CustomerAddUpdateForm(Customer customer = null)
         {
             InitializeComponent();
             _validate = new Validate.Validate();
-            _customerServices = new CustomerServices();
+            _customer = customer ?? new Customer();
+            _isNew = customer == null;
+
+            cbStatus.ItemsSource = new int[] { 0, 1 };
+            if (!_isNew)
+            {
+                txtUsername.Text = _customer.Username;
+                txtPassword.Password = _customer.Password;
+                dpBirthday.SelectedDate = _customer.DateOfBirth;
+                txtEmail.Text = _customer.Email;
+                txtTelephone.Text = _customer.Phone;
+                cbStatus.SelectedItem = _customer.Status;
+            }
         }
 
-        private void btnRes_Click(object sender, RoutedEventArgs e)
+        private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 string username = txtUsername.Text;
                 string password = txtPassword.Password;
-                if (!dpDOB.SelectedDate.HasValue)
+                if (!dpBirthday.SelectedDate.HasValue)
                 {
                     MessageBox.Show("Vui lòng chọn ngày sinh");
                     return;
                 }
-                DateTime DOB = dpDOB.SelectedDate.Value;
+                DateTime DOB = dpBirthday.SelectedDate.Value;
                 string email = txtEmail.Text;
-                string phone = txtPhone.Text;
-                //if (cbStatus.SelectedItem == null)
-                //{
-                //    MessageBox.Show("Vui lòng chọn trạng thái");
-                //    return;
-                //}
-                //int status = (int)cbStatus.SelectedItem;
+                string phone = txtTelephone.Text;
+                if (cbStatus.SelectedItem == null)
+                {
+                    MessageBox.Show("Vui lòng chọn trạng thái");
+                    return;
+                }
+                int status = (int)cbStatus.SelectedItem;
                 if (!_validate.isString(username) ||
                    !_validate.isString(password) ||
                    !_validate.isString(DOB.ToString()) ||
@@ -62,7 +77,7 @@ namespace WPF
                     return;
                 }
 
-                if (!Regex.IsMatch(txtPhone.Text, @"^(0|\+84)(3[2-9]|5[6|8|9]|7[06-9]|8[1-9]|9[0-9])[0-9]{7}$"))
+                if (!Regex.IsMatch(txtTelephone.Text, @"^(0|\+84)(3[2-9]|5[6|8|9]|7[06-9]|8[1-9]|9[0-9])[0-9]{7}$"))
                 {
                     MessageBox.Show("Wrong format phone number");
                     return;
@@ -73,31 +88,30 @@ namespace WPF
                     MessageBox.Show("Wrong format email");
                     return;
                 }
-                Customer _customer = new Customer();
                 _customer.Username = username;
                 _customer.Password = password;
                 _customer.DateOfBirth = DOB;
                 _customer.Email = email;
                 _customer.Phone = phone;
-                _customer.CreatedAt = DateTime.Now;
-                _customer.Status = 1;
+                _customer.Status = status;
+                if (_isNew)
+                {
+                    _customer.CreatedAt = DateTime.Now;
+                    MessageBox.Show("New customer is added successfully");
+                }
+                else
+                {
+                    _customer.CreatedAt = _customer.CreatedAt;
+                    MessageBox.Show("Customer is updated successfully");
+                }
 
-                _customerServices.AddCustomer(_customer);
-                LoginWindow loginWindow = new LoginWindow();
-                loginWindow.Show();
+                DialogResult = true;
                 this.Close();
             }
             catch(Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-        }
-
-        private void btnLogin_Click(object sender, RoutedEventArgs e)
-        {
-            LoginWindow loginWindow = new LoginWindow();
-            loginWindow.Show();
-            this.Close();
         }
     }
 }

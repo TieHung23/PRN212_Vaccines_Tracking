@@ -1,11 +1,11 @@
-create database PRN212_Vaccines_Tracking
+--create database PRN212_Vaccines_Tracking_2
 
 -- Updated Table Creation Script with IDENTITY
 CREATE TABLE [Customer] (
     [id] INTEGER IDENTITY(1,1) NOT NULL UNIQUE,
     [username] VARCHAR(50) NOT NULL,
     [password] VARCHAR(100) NOT NULL,
-    [dateOfBirth] VARCHAR(20) NOT NULL,
+    [dateOfBirth] DATETIME NOT NULL,
     [email] VARCHAR(100) NOT NULL,
     [phone] VARCHAR(20) NOT NULL,
     [createdAt] DATETIME NOT NULL DEFAULT GETDATE(),

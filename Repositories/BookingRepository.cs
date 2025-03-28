@@ -11,11 +11,11 @@ namespace Repositories
 {
     public class BookingRepository
     {
-        private readonly VaccineTrackingContext context;
+        private readonly Prn212VaccinesTracking2Context context;
         private readonly VaccinesTrackingRepository vaccinesTrackingRepository;
         public BookingRepository(  )
         {
-            context = new VaccineTrackingContext();
+            context = new Prn212VaccinesTracking2Context();
             vaccinesTrackingRepository = new VaccinesTrackingRepository();
         }
         public void AddBooking( Booking booking , DateTime vaccinationDate)

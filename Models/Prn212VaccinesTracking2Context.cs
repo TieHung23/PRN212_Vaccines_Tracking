@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Models;
 
-public partial class VaccineTrackingContext : DbContext
+public partial class Prn212VaccinesTracking2Context : DbContext
 {
-    public VaccineTrackingContext()
+    public Prn212VaccinesTracking2Context()
     {
     }
 
-    public VaccineTrackingContext(DbContextOptions<VaccineTrackingContext> options)
+    public Prn212VaccinesTracking2Context(DbContextOptions<Prn212VaccinesTracking2Context> options)
         : base(options)
     {
     }
@@ -29,17 +29,17 @@ public partial class VaccineTrackingContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=TieHung\\SQLEXPRESS;Database=PRN212_Vaccines_Tracking;User Id=sa;Password=123456;TrustServerCertificate=true;Trusted_Connection=SSPI;Encrypt=false;");
+        => optionsBuilder.UseSqlServer("Server=LAPTOP-8UGAAJKM\\SQLEXPRESS01;Database=PRN212_Vaccines_Tracking_2;uid=sa;pwd=12345;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Booking>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Booking__3213E83FAED3A14E");
+            entity.HasKey(e => e.Id).HasName("PK__Booking__3213E83FA3B861E1");
 
             entity.ToTable("Booking");
 
-            entity.HasIndex(e => e.Id, "UQ__Booking__3213E83EDE0E9FB1").IsUnique();
+            entity.HasIndex(e => e.Id, "UQ__Booking__3213E83EA67F549D").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CreatedAt)
@@ -70,7 +70,7 @@ public partial class VaccineTrackingContext : DbContext
                         .HasConstraintName("FK__Booking_C__booki__6477ECF3"),
                     j =>
                     {
-                        j.HasKey("BookingId", "ChildId").HasName("PK__Booking___04F3A9914D796DEA");
+                        j.HasKey("BookingId", "ChildId").HasName("PK__Booking___04F3A9914287485D");
                         j.ToTable("Booking_Child");
                         j.IndexerProperty<int>("BookingId").HasColumnName("bookingId");
                         j.IndexerProperty<int>("ChildId").HasColumnName("childId");
@@ -89,7 +89,7 @@ public partial class VaccineTrackingContext : DbContext
                         .HasConstraintName("FK__Booking_V__booki__628FA481"),
                     j =>
                     {
-                        j.HasKey("BookingId", "VaccineId").HasName("PK__Booking___8ACEE812E5BE1F7F");
+                        j.HasKey("BookingId", "VaccineId").HasName("PK__Booking___8ACEE81290F462F5");
                         j.ToTable("Booking_Vaccine");
                         j.IndexerProperty<int>("BookingId").HasColumnName("bookingId");
                         j.IndexerProperty<int>("VaccineId").HasColumnName("vaccineId");
@@ -98,11 +98,11 @@ public partial class VaccineTrackingContext : DbContext
 
         modelBuilder.Entity<Child>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Child__3213E83FB0049A01");
+            entity.HasKey(e => e.Id).HasName("PK__Child__3213E83FB8CAAC14");
 
             entity.ToTable("Child");
 
-            entity.HasIndex(e => e.Id, "UQ__Child__3213E83EB21FB18F").IsUnique();
+            entity.HasIndex(e => e.Id, "UQ__Child__3213E83E00661B62").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.DateOfBirth)
@@ -128,11 +128,11 @@ public partial class VaccineTrackingContext : DbContext
 
         modelBuilder.Entity<Customer>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Customer__3213E83F9D1CC9BA");
+            entity.HasKey(e => e.Id).HasName("PK__Customer__3213E83FFCD2FF87");
 
             entity.ToTable("Customer");
 
-            entity.HasIndex(e => e.Id, "UQ__Customer__3213E83E77D2F52C").IsUnique();
+            entity.HasIndex(e => e.Id, "UQ__Customer__3213E83EB5C4FDCD").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CreatedAt)
@@ -140,8 +140,7 @@ public partial class VaccineTrackingContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("createdAt");
             entity.Property(e => e.DateOfBirth)
-                .HasMaxLength(20)
-                .IsUnicode(false)
+                .HasColumnType("datetime")
                 .HasColumnName("dateOfBirth");
             entity.Property(e => e.Email)
                 .HasMaxLength(100)
@@ -164,11 +163,11 @@ public partial class VaccineTrackingContext : DbContext
 
         modelBuilder.Entity<Vaccine>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Vaccine__3213E83F851A1459");
+            entity.HasKey(e => e.Id).HasName("PK__Vaccine__3213E83F77F998A5");
 
             entity.ToTable("Vaccine");
 
-            entity.HasIndex(e => e.Id, "UQ__Vaccine__3213E83EF6EFBF9F").IsUnique();
+            entity.HasIndex(e => e.Id, "UQ__Vaccine__3213E83EA2B580AA").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Description)
@@ -187,7 +186,7 @@ public partial class VaccineTrackingContext : DbContext
 
         modelBuilder.Entity<VaccineDetail>(entity =>
         {
-            entity.HasKey(e => e.VaccineDetailsId).HasName("PK__VaccineD__FC7B323FF82926CF");
+            entity.HasKey(e => e.VaccineDetailsId).HasName("PK__VaccineD__FC7B323F346E071B");
 
             entity.Property(e => e.VaccineDetailsId).HasColumnName("vaccineDetailsId");
             entity.Property(e => e.EntryDate)
@@ -206,11 +205,11 @@ public partial class VaccineTrackingContext : DbContext
 
         modelBuilder.Entity<VaccinesTracking>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Vaccines__3213E83FC69F8692");
+            entity.HasKey(e => e.Id).HasName("PK__Vaccines__3213E83FFDBA8864");
 
             entity.ToTable("VaccinesTracking");
 
-            entity.HasIndex(e => e.Id, "UQ__Vaccines__3213E83ED4807B76").IsUnique();
+            entity.HasIndex(e => e.Id, "UQ__Vaccines__3213E83E355CF120").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.BookingId).HasColumnName("bookingId");
