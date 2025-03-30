@@ -86,5 +86,6 @@ namespace Services
                 throw new ArgumentException("Customer has children are in vaccine trackings, can not delete this customer");
             }
         }
+    
     }
 }

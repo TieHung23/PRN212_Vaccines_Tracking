@@ -25,6 +25,7 @@ namespace WPF
         public BookingWindow()
         {
             InitializeComponent();
+            dgChildren.IsEnabled = false;
         }
         public BookingWindow( Customer cus )
         {
@@ -204,6 +205,14 @@ namespace WPF
             bookingServices.AddBooking( booking, ( DateTime )  DateVaccination  );
 
             MessageBox.Show( "Booking added successfully" );
+            btnResetChild_Click( sender, e );
+            btnResetUser_Click( sender, e );
+            btnResetVaccine_Click( sender, e );
+            ChildStackPanel.Children.Clear();
+            VaccineStackPanel.Children.Clear();
+            ParentNameTextBlock.Text = string.Empty;
+            txtTotalPrice.Text = "$0.00";
+
             return;
         }
 
@@ -279,7 +288,6 @@ namespace WPF
             LoadVaccine();
             LoadCustomer();
             LoadChildren();
-            dgChildren.IsEnabled = false;
             dpBookingDate.SelectedDate = DateTime.Now;
         }
 

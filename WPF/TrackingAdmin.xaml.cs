@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace WPF
 {
     /// <summary>
-    /// Interaction logic for TrackingWindow.xaml
+    /// Interaction logic for TrackingAdmin.xaml
     /// </summary>
-    public partial class TrackingWindow : Window
+    public partial class TrackingAdmin : Window
     {
-        public TrackingWindow()
+        public TrackingAdmin()
         {
             InitializeComponent();
         }
