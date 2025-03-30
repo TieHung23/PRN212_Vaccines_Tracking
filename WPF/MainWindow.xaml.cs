@@ -21,15 +21,24 @@ namespace WPF
         private readonly CustomerServices _customerService;
         private readonly ChildrenServices _childrenService;
         private readonly BookingServices _bookingServices;
+        private readonly VaccineServices _vacineServices;
+        private readonly VaccineDetailService _vaccineDetailService;
         public MainWindow()
         {
             InitializeComponent();
             _customerService = new CustomerServices();
             _childrenService = new ChildrenServices();
             _bookingServices = new BookingServices();
+            _vacineServices = new VaccineServices();
+            _vaccineDetailService = new VaccineDetailService();
+
 
             LoadCustomer(_customerService.GetAllForAdmin());
             LoadChildren(_childrenService.GetAllForAdmin());
+            LoadVaccine(_vacineServices.GetAll());
+            LoadVaccineDetail(_vaccineDetailService.GetAll());
+
+
             cbParent.ItemsSource = _customerService.GetAllForAdmin();
             LoadBookings();
         }
@@ -39,10 +48,20 @@ namespace WPF
             DGCustomer.ItemsSource = customers;
         }
 
+
         private void LoadChildren(List<Child> children)
         {
             DGChildren.ItemsSource = children;
         }
+        private void LoadVaccine(List<Vaccine> vaccine)
+        {
+            DGVaccine.ItemsSource = vaccine;
+        }
+        private void LoadVaccineDetail(List<VaccineDetail> vaccineDetail)
+        {
+            DGVaccineDetail.ItemsSource = vaccineDetail;
+        }
+
 
         private void LoadBookings()
         {
@@ -293,6 +312,181 @@ namespace WPF
             bookingWindow.Show();
             this.Close();
         }
+
+        private void AddVaccineButton_Click(object sender, RoutedEventArgs e)
+        {
+            VaccineAddUpdateWindow vaccineAddUpdateWindow = new VaccineAddUpdateWindow();
+            if (vaccineAddUpdateWindow.ShowDialog() == true)
+            {
+                try
+                {
+                    _vacineServices.AddVaccine(vaccineAddUpdateWindow.vaccine);
+                    LoadVaccine(_vacineServices.GetAll());
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (DGVaccine.SelectedItem is Customer customer)
+            {
+                CustomerAddUpdateForm customerAddUpdateForm = new CustomerAddUpdateForm(customer);
+                if (customerAddUpdateForm.ShowDialog() == true)
+                {
+                    try
+                    {
+                        _customerService.UpdateCustomer(customerAddUpdateForm.Customer);
+                        LoadCustomer(_customerService.GetAllForAdmin());
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please choose a customer to update");
+            }
+        }
+
+        private void UpdateVaccineButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (DGVaccine.SelectedItem is Vaccine vaccine)
+            {
+                VaccineAddUpdateWindow vaccineAddUpdate = new(vaccine);
+                if (vaccineAddUpdate.ShowDialog() == true)
+                {
+                    try
+                    {
+                        _vacineServices.UpdateVaccine(vaccineAddUpdate.vaccine);
+                        LoadVaccine(_vacineServices.GetAll());
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please choose a vaccine to update");
+            }
+        }
+
+        private void DeleteVccineButton_Click(object sender, RoutedEventArgs e)
+        {
+            var vaccine = DGVaccine.SelectedItem as Vaccine;
+            if (vaccine != null)
+            {
+                if (MessageBox.Show($"Delete {vaccine.Name}?", "Confirm", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        _vacineServices.DeleteVaccine(vaccine);
+                        LoadVaccine(_vacineServices.GetAll());
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select a vaccine to delete");
+            }
+        }
+
+        private void txtVaccineSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string search = txtVaccineSearch.Text;
+            LoadVaccine(_vacineServices.SearchVaccine(search)); 
+        }
+
+        private void txtVaccineDetaiSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string search = txtVaccineDetailSearch.Text;
+            LoadVaccineDetail(_vaccineDetailService.SearchVaccineDetail(search));
+        }
+
+        private void AddVaccineDetailButton_Click(object sender, RoutedEventArgs e)
+        {
+            VaccineDetailAddUpdateForm vaccineDetailAddUpdateForm = new VaccineDetailAddUpdateForm();
+            if (vaccineDetailAddUpdateForm.ShowDialog() == true)
+            {
+                try
+                {
+                    _vaccineDetailService.AddCVaccineDetail(vaccineDetailAddUpdateForm.vaccineDetail);
+                    LoadVaccineDetail(_vaccineDetailService.GetAll());
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+        private void UpdateVaccineDetailButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (DGVaccineDetail.SelectedItem is VaccineDetail vaccineDetail)
+            {
+                VaccineDetailAddUpdateForm vaccineDetailAddUpdate = new(vaccineDetail);
+                if (vaccineDetailAddUpdate.ShowDialog() == true)
+                {
+                    try
+                    {
+                        _vaccineDetailService.UpdateVaccineDetail(vaccineDetail);
+                        LoadVaccineDetail(_vaccineDetailService.GetAll());
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please choose a vaccine to update");
+            }
+        }
+
+        private void DeleteVccineDetailButton_Click(object sender, RoutedEventArgs e)
+        {
+            var vaccineDetail = DGVaccineDetail.SelectedItem as VaccineDetail;
+            if (vaccineDetail != null)
+            {
+                if (MessageBox.Show($"Delete {vaccineDetail.VaccineDetailsId}?", "Confirm", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        _vaccineDetailService.DeleteVaccineDetail(vaccineDetail);
+                        LoadVaccineDetail(_vaccineDetailService.GetAll());
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select a vaccine to delete");
+            }
+        }
+
 
         //private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         //{

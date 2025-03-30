@@ -54,7 +54,41 @@
                 </StackPanel>
             </TabItem>
             <TabItem Header="Vaccine">
-                
+                <StackPanel>
+                    <Button Content="Add Vaccine" Margin="5" Click="AddVaccineButton_Click" />
+                    <Button Content="Update Vaccine" Margin="5" Click="UpdateVaccineButton_Click"/>
+                    <Button Content="Delete Vaccine" Margin="5" Click="DeleteVccineButton_Click"/>
+                    <Label Content="Search"/>
+                    <TextBox x:Name="txtVaccineSearch" TextChanged="txtVaccineSearch_TextChanged"/>
+                    <DataGrid x:Name="DGVaccine" AutoGenerateColumns="False" Margin="5">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="AUTO"/>
+                            <DataGridTextColumn Header="VaccineName" Binding="{Binding Name}" Width="*"/>
+                            <DataGridTextColumn Header="Price" Binding="{Binding Price}" Width="100"/>
+                            <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*"/>
+                            <DataGridTextColumn Header="DosesTimes" Binding="{Binding DosesTimes}" Width="100"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Vaccine Detail">
+                <StackPanel>
+                    <Button Content="Add Vaccine Detail" Margin="5" Click="AddVaccineDetailButton_Click"/>
+                    <Button Content="Update Vaccine Detail" Margin="5" Click="UpdateVaccineDetailButton_Click"/>
+                    <Button Content="Delete Vaccine Detail" Margin="5" Click="DeleteVccineDetailButton_Click"/>
+                    <Label Content="Search"/>
+                    <TextBox x:Name="txtVaccineDetailSearch" TextChanged="txtVaccineDetaiSearch_TextChanged"/>
+                    <DataGrid x:Name="DGVaccineDetail" AutoGenerateColumns="False" Margin="5">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="VaccineDetailsId" Binding="{Binding VaccineDetailsId}" Width="100"/>
+                            <DataGridTextColumn Header="VaccineId" Binding="{Binding VaccineId}" Width="100"/>
+                            <DataGridTextColumn Header="EntryDate" Binding="{Binding EntryDate}" Width="100"/>
+                            <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="100"/>
+                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100"/>
+                            <DataGridTextColumn Header="Vaccine" Binding="{Binding Vaccine.Name}" Width="auto"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
             </TabItem>
             <TabItem Header="Booking">
                 <StackPanel>
