@@ -73,6 +73,21 @@ namespace WPF
                     MessageBox.Show("Wrong format email");
                     return;
                 }
+
+                var existEmail = _customerServices.GetAllForAdmin().FirstOrDefault(x => x.Email == txtEmail.Text);
+                if (existEmail != null)
+                {
+                    MessageBox.Show("Email is existed. Please choose another");
+                    return;
+                }
+
+                var existPhone = _customerServices.GetAllForAdmin().FirstOrDefault(x => x.Phone == txtPhone.Text);
+                if (existPhone != null)
+                {
+                    MessageBox.Show("Phone is existed. Please choose another");
+                    return;
+                }
+
                 Customer _customer = new Customer();
                 _customer.Username = username;
                 _customer.Password = password;
