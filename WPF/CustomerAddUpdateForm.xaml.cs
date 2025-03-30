@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Models;
+using Services;
 using Validate;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
@@ -24,6 +25,7 @@ namespace WPF
     /// </summary>
     public partial class CustomerAddUpdateForm : Window
     {
+        private readonly CustomerServices _customerServices;
         private Customer _customer;
         private bool _isNew;
         private readonly IValidate _validate;
@@ -31,9 +33,11 @@ namespace WPF
         public CustomerAddUpdateForm(Customer customer = null)
         {
             InitializeComponent();
+            _customerServices = new CustomerServices();
             _validate = new Validate.Validate();
             _customer = customer ?? new Customer();
             _isNew = customer == null;
+
 
             cbStatus.ItemsSource = new int[] { 0, 1 };
             if (!_isNew)
@@ -88,6 +92,20 @@ namespace WPF
                     MessageBox.Show("Wrong format email");
                     return;
                 }
+
+                var existEmail = _customerServices.GetAllForAdmin().FirstOrDefault(x => x.Email == txtEmail.Text);
+                if(existEmail != null)
+                {
+                    MessageBox.Show("Email is existed. Please choose another");
+                    return;
+                }
+
+                var existPhone = _customerServices.GetAllForAdmin().FirstOrDefault(x => x.Phone == txtTelephone.Text);
+                if (existPhone != null)
+                {
+                    MessageBox.Show("Phone is existed. Please choose another");
+                    return;
+                }
                 _customer.Username = username;
                 _customer.Password = password;
                 _customer.DateOfBirth = DOB;
@@ -112,6 +130,11 @@ namespace WPF
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

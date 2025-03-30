@@ -35,10 +35,7 @@ namespace WPF
         public ChildAddUpdateWindow(bool isAdmin, int? userid = null, Child child = null)
         {
             InitializeComponent();
-            if(child != null)
-            {
-                cbParent.IsEnabled = false;
-            }
+            
             _customerServices = new CustomerServices();
             _childrenServices = new ChildrenServices();
             _validate = new Validate.Validate();
@@ -46,39 +43,89 @@ namespace WPF
             _isAdmin = isAdmin;
             _isNew = child == null;
             _userId = userid;
+            //update admin
+            //if (isAdmin && child != null)
+            //{
+            //    cbParent.IsEnabled = false;
+            //}
 
-            if (isAdmin)
+            ////add admin
+            //if (isAdmin && child == null)
+            //{
+            //    cbParent.IsEnabled = true;
+            //    cbParent.ItemsSource = _customerServices.GetAllForAdmin();
+            //}
+            //if (!isAdmin && _userId.HasValue)
+            //{
+            //    cbParent.IsEnabled = false;
+            //    //cbParent.IsEnabled = false;
+            //    var customer = _customerServices.GetById(_userId.Value); // Lấy trực tiếp từ database
+            //    if (customer != null)
+            //    {
+            //        cbParent.ItemsSource = new List<Customer> { customer };
+            //        cbParent.SelectedIndex = 0; // Chọn mặc định customer này
+            //    }
+            //}
+
+            //cbGender.ItemsSource = new string[] { "F", "M", "O" };
+            //cbStatus.ItemsSource = new int[] { 0, 1 };
+            //if (!_isNew)
+            //{
+            //    //cbParent.SelectedItem = _child.ParentId;
+            //    cbParent.SelectedItem = cbParent.Items.Cast<Customer>()
+            //                          .FirstOrDefault(c => c.Id == _child.ParentId);
+            //    txtName.Text = _child.Name;
+            //    dpBirthday.SelectedDate = _child.DateOfBirth;
+            //    cbGender.SelectedItem = _child.Gender;
+            //    cbStatus.SelectedItem = _child.Status;
+            //}
+
+            SetupUI();
+        }
+
+        private void SetupUI()
+        {
+            cbGender.ItemsSource = new string[] { "F", "M", "O" };
+            cbStatus.ItemsSource = new int[] { 0, 1 };
+
+            if (_isAdmin)
             {
-                cbParent.IsEnabled = true;
-                cbParent.ItemsSource = _customerServices.GetAllForAdmin();
+                // Admin có quyền chọn parent khi thêm mới
+                if (_isNew)
+                {
+                    cbParent.IsEnabled = true;
+                    cbParent.ItemsSource = _customerServices.GetAllForAdmin();
+                }
+                else
+                {
+                    // Khi update, Admin không thể đổi parent
+                    cbParent.IsEnabled = false;
+                    cbParent.ItemsSource = _customerServices.GetAllForAdmin();
+                    cbParent.SelectedValue = _child.ParentId;
+                }
             }
-            if (!isAdmin && _userId.HasValue)
+            else if (_userId.HasValue)
             {
+                // Customer chỉ có thể xem parent của họ
                 cbParent.IsEnabled = false;
-                cbParent.IsEnabled = false;
-                var customer = _customerServices.GetById(_userId.Value); // Lấy trực tiếp từ database
+                var customer = _customerServices.GetById(_userId.Value);
                 if (customer != null)
                 {
                     cbParent.ItemsSource = new List<Customer> { customer };
-                    cbParent.SelectedIndex = 0; // Chọn mặc định customer này
-                }
-
-
-
-                cbGender.ItemsSource = new string[] { "F", "M", "O" };
-                cbStatus.ItemsSource = new int[] { 0, 1 };
-                if (!_isNew)
-                {
-                    //cbParent.SelectedItem = _child.ParentId;
-                    cbParent.SelectedItem = cbParent.Items.Cast<Customer>()
-                                          .FirstOrDefault(c => c.Id == _child.ParentId);
-                    txtName.Text = _child.Name;
-                    dpBirthday.SelectedDate = _child.DateOfBirth;
-                    cbGender.SelectedItem = _child.Gender;
-                    cbStatus.SelectedItem = _child.Status;
+                    cbParent.SelectedValue = customer.Id;
                 }
             }
+
+            if (!_isNew)
+            {
+                // Gán dữ liệu khi update
+                txtName.Text = _child.Name;
+                dpBirthday.SelectedDate = _child.DateOfBirth;
+                cbGender.SelectedItem = _child.Gender;
+                cbStatus.SelectedItem = _child.Status;
+            }
         }
+
 
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
@@ -113,6 +160,11 @@ namespace WPF
             }
 
             DialogResult = true;
+            this.Close();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
             this.Close();
         }
     }

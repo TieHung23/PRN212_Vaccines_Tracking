@@ -5,22 +5,110 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF"
         mc:Ignorable="d"
-        Title="VaccineDetailAddUpdateForm" Height="450" Width="800">
-    <Grid>
-        <StackPanel>
-            <Label Content="EntryDate"/>
-            <DatePicker x:Name="txtEntryDate"/>
+        Title="VaccineDetailAddUpdateForm" Height="500" Width="600"
+        WindowStartupLocation="CenterScreen"
+        Background="#F5F5F5">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1976D2"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
 
-            <Label Content="Quantity" />
-            <TextBox x:Name="txtQuantity" />
+        <Style TargetType="TextBox">
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="Margin" Value="0,5,0,15"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
 
-            <Label Content="Status" />
-            <ComboBox x:Name="txtStatus"/>
+        <Style TargetType="DatePicker">
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="Margin" Value="0,5,0,15"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
 
-            <Label Content="Vaccine" />
-            <ComboBox x:Name="txtVaccine" />
+        <Style TargetType="ComboBox">
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="Margin" Value="0,5,0,15"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
 
-            <Button Content="Save" x:Name="btnSave" Click="btnSave_Click" />
-        </StackPanel>
-    </Grid>
+        <Style TargetType="Label">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="0,5"/>
+        </Style>
+    </Window.Resources>
+
+    <Border Background="White" Margin="20" CornerRadius="8" Padding="30">
+
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <TextBlock Text="Vaccine Inventory Details" FontSize="24" FontWeight="Bold" Margin="0,0,0,20" Grid.Row="0" Foreground="#333333"/>
+
+            <!-- Form Fields -->
+            <StackPanel Grid.Row="1">
+                <Label Content="Entry Date"/>
+                <DatePicker x:Name="txtEntryDate" SelectedDateFormat="Long"/>
+
+                <Label Content="Quantity" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="txtQuantity" />
+                    <TextBlock Text="doses" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,15" Foreground="#777777"/>
+                </Grid>
+
+                <Label Content="Status" />
+                <ComboBox x:Name="txtStatus" IsEditable="False"/>
+
+                <Label Content="Vaccine" />
+                <ComboBox x:Name="txtVaccine" IsEditable="False"/>
+            </StackPanel>
+
+            <!-- Button Area -->
+            <Grid Grid.Row="2" Margin="0,20,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Content="Cancel" Grid.Column="0" Margin="0,0,10,0" Background="#9E9E9E"/>
+                <Button Content="Save" x:Name="btnSave" Click="btnSave_Click" Grid.Column="1" Margin="10,0,0,0"/>
+            </Grid>
+        </Grid>
+    </Border>
 </Window>

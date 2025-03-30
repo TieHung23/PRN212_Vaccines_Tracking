@@ -5,85 +5,192 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF"
         mc:Ignorable="d"
-        Title="CustomerWindow" Height="450" Width="800">
+        Title="CustomerWindow" Height="650" Width="950"
+        WindowStartupLocation="CenterScreen"
+        Background="#F5F5F5">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1976D2"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+        </Style>
+
+        <Style TargetType="TabItem">
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+        <Style TargetType="DataGrid">
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#DDDDDD"/>
+            <Setter Property="RowBackground" Value="White"/>
+            <Setter Property="AlternatingRowBackground" Value="#F9F9F9"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#EEEEEE"/>
+            <Setter Property="VerticalGridLinesBrush" Value="#EEEEEE"/>
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+    </Window.Resources>
+
     <Grid>
-        <TextBlock Text="{Binding Customer.Username, StringFormat='Welcome back, {0}'}" FontSize="20"/>
-        <TabControl x:Name="tabContol">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header with welcome message -->
+        <Border Grid.Row="0" Background="#2196F3" Padding="20,15">
+            <TextBlock Text="{Binding Customer.Username, StringFormat='Welcome back, {0}'}" 
+                     FontSize="22" FontWeight="SemiBold" Foreground="White"/>
+        </Border>
+
+        <!-- Main content with tabs -->
+        <TabControl x:Name="tabContol" Grid.Row="1" Margin="0,5,0,0" BorderThickness="0">
             <TabItem Header="Profile">
-                <Grid Margin="20">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+                <Border Background="White" CornerRadius="5" Margin="10" Padding="25">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="Thông tin tài khoản" FontSize="18" FontWeight="Bold" Grid.Row="0" Margin="0,0,0,10"/>
+                        <TextBlock Text="Thông tin tài khoản" FontSize="20" FontWeight="Bold" Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,25" Foreground="#333333"/>
 
+                        <TextBlock Text="Tên tài khoản:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,15,10" FontWeight="SemiBold"/>
+                        <TextBox Name="txtUsername" Grid.Row="2" Grid.Column="1" Width="300" IsReadOnly="True" HorizontalAlignment="Left" Margin="0,10,0,10"/>
 
-                    <TextBlock Text="Tên tài khoản:" Grid.Row="2"/>
-                    <TextBox Name="txtUsername" Grid.Row="2" Width="250" IsReadOnly="True"/>
+                        <TextBlock Text="Ngày sinh:" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,15,10" FontWeight="SemiBold"/>
+                        <DatePicker Name="dpDateOfBirth" Grid.Row="4" Grid.Column="1" Width="300" IsEnabled="false" HorizontalAlignment="Left" Margin="0,10,0,10"/>
 
-                    <TextBlock Text="Ngày sinh:" Grid.Row="4"/>
-                    <DatePicker Name="dpDateOfBirth" Grid.Row="4" Width="250" IsEnabled="false"/>
+                        <TextBlock Text="Email:" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,15,10" FontWeight="SemiBold"/>
+                        <TextBox Name="txtEmail" Grid.Row="5" Grid.Column="1" Width="300" IsReadOnly="True" HorizontalAlignment="Left" Margin="0,10,0,10"/>
 
-                    <TextBlock Text="Email:" Grid.Row="5"/>
-                    <TextBox Name="txtEmail" Grid.Row="5" Width="250" IsReadOnly="True"/>
+                        <TextBlock Text="Số điện thoại:" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,15,10" FontWeight="SemiBold"/>
+                        <TextBox Name="txtPhone" Grid.Row="6" Grid.Column="1" Width="300" IsReadOnly="True" HorizontalAlignment="Left" Margin="0,10,0,10"/>
 
-                    <TextBlock Text="Số điện thoại:" Grid.Row="6"/>
-                    <TextBox Name="txtPhone" Grid.Row="6" Width="250" IsReadOnly="True"/>
+                        <TextBlock Text="Ngày tạo tài khoản:" Grid.Row="7" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,15,10" FontWeight="SemiBold"/>
+                        <TextBox Name="txtCreatedAt" Grid.Row="7" Grid.Column="1" Width="300" IsReadOnly="True" Background="#F5F5F5" HorizontalAlignment="Left" Margin="0,10,0,10"/>
 
-                    <TextBlock Text="Ngày tạo tài khoản:" Grid.Row="7"/>
-                    <TextBox Name="txtCreatedAt" Grid.Row="7" Width="250" IsReadOnly="True" Background="LightGray"/>
-
-                    <Button Content="Edit Profile" Grid.Row="9" Width="150" Height="30" x:Name="btnEditProfile" Click="EditProfile_Click" Margin="10" Visibility="Visible"/>
-                    <Button Content="Save Profile" Grid.Row="9" Width="150" Height="30" x:Name="btnSaveProfile" Click="SaveProfile_Click" Margin="10" Visibility="Hidden"/>
-                </Grid>
+                        <StackPanel Grid.Row="9" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,25,0,0">
+                            <Button Content="Edit Profile" Width="150" Height="40" x:Name="btnEditProfile" Click="EditProfile_Click" Margin="0,0,15,0" Visibility="Visible"/>
+                            <Button Content="Save Profile" Width="150" Height="40" x:Name="btnSaveProfile" Click="SaveProfile_Click" Visibility="Hidden"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
             </TabItem>
+
             <TabItem Header="Child" x:Name="tabChild">
-                <StackPanel>
-                    <Button Content="Add Child" Click="btnAddChild_Click" Margin="5"/>
-                    <Button Content="Update Child" Click="btnUpdateChild_Click" Margin="5"/>
-                    <Button Content="Delete Child" Click="btnDeleteChild_Click" Margin="5"/>
-                    <Label Content="Search"/>
-                    <TextBox x:Name="txtChildSearch" TextChanged="txtChildSearch_TextChanged"/>
-                    <DataGrid x:Name="DGChildren" AutoGenerateColumns="False" Margin="5">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="Auto"/>
-                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="Auto"/>
-                            <DataGridTextColumn Header="Parent" Binding="{Binding Parent.Username}" Width="Auto"/>
-                            <DataGridTextColumn Header="DateOfBirth" Binding="{Binding DateOfBirth}" Width="Auto"/>
-                            <DataGridTextColumn Header="Gender" Binding="{Binding Gender}" Width="Auto"/>
-                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="Auto"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </StackPanel>
+                <Border Background="White" CornerRadius="5" Margin="10" Padding="20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Action buttons -->
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
+                            <Button Content="Add Child" Click="btnAddChild_Click" Margin="0,0,10,0" Width="120"/>
+                            <Button Content="Update Child" Click="btnUpdateChild_Click" Margin="0,0,10,0" Width="120"/>
+                            <Button Content="Delete Child" Click="btnDeleteChild_Click" Width="120"/>
+                        </StackPanel>
+
+                        <!-- Search box -->
+                        <Grid Grid.Row="1" Margin="0,0,0,15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Search" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                            <TextBox x:Name="txtChildSearch" Grid.Column="1" TextChanged="txtChildSearch_TextChanged" Margin="10,0,0,0"/>
+                        </Grid>
+
+                        <!-- Data grid -->
+                        <DataGrid x:Name="DGChildren" Grid.Row="2" AutoGenerateColumns="False" Margin="0" IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="Auto"/>
+                                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
+                                <DataGridTextColumn Header="Parent" Binding="{Binding Parent.Username}" Width="*"/>
+                                <DataGridTextColumn Header="DateOfBirth" Binding="{Binding DateOfBirth}" Width="Auto"/>
+                                <DataGridTextColumn Header="Gender" Binding="{Binding Gender}" Width="Auto"/>
+                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="Auto"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Border>
             </TabItem>
-            <TabItem Header="Booking" x:Name="tabBooking" Height="20" VerticalAlignment="Top">
-                <StackPanel>
-                    <Button Content="Add Booking" Click="btnAddBooking_Click" Margin="5"/>
-                    <!--<Button Content="Update Child" Click="btnUpdateChild_Click" Margin="5"/>-->
-                    <!--<Button Content="Delete Child" Click="btnDeleteChild_Click" Margin="5"/>-->
-                    <!--<Label Content="Search"/>-->
-                    <!--<TextBox x:Name="txtBookSearch" TextChanged="txtChildSearch_TextChanged"/>-->
-                    <DataGrid x:Name="DGBooking" AutoGenerateColumns="False" Margin="5">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="Auto"/>
-                            <DataGridTextColumn Header="Parent" Binding="{Binding ParentName}" Width="Auto"/>
-                            <DataGridTextColumn Header="Children" Binding="{Binding ChildrenName}" Width="Auto"/>
-                            <DataGridTextColumn Header="Vaccines" Binding="{Binding VaccineNames}" Width="Auto"/>
-                            <DataGridTextColumn Header="FinalPrice" Binding="{Binding FinalPrice}" Width="Auto"/>
-                            <DataGridTextColumn Header="CreatedAt" Binding="{Binding CreatedAt}" Width="Auto"/>
-                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="Auto"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </StackPanel>
+
+            <TabItem Header="Booking" x:Name="tabBooking">
+                <Border Background="White" CornerRadius="5" Margin="10" Padding="20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Action button -->
+                        <Button Content="Add Booking" Click="btnAddBooking_Click" HorizontalAlignment="Left" Margin="0,0,0,15" Width="150"/>
+                        <!--<Button Content="Update Child" Click="btnUpdateChild_Click" Margin="5"/>-->
+                        <!--<Button Content="Delete Child" Click="btnDeleteChild_Click" Margin="5"/>-->
+                        <!--<Label Content="Search"/>-->
+                        <!--<TextBox x:Name="txtBookSearch" TextChanged="txtChildSearch_TextChanged"/>-->
+
+                        <!-- Data grid -->
+                        <DataGrid x:Name="DGBooking" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="Auto"/>
+                                <DataGridTextColumn Header="Parent" Binding="{Binding ParentName}" Width="*"/>
+                                <DataGridTextColumn Header="Children" Binding="{Binding ChildrenName}" Width="*"/>
+                                <DataGridTextColumn Header="Vaccines" Binding="{Binding VaccineNames}" Width="*"/>
+                                <DataGridTextColumn Header="FinalPrice" Binding="{Binding FinalPrice}" Width="Auto"/>
+                                <DataGridTextColumn Header="CreatedAt" Binding="{Binding CreatedAt}" Width="Auto"/>
+                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="Auto"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Border>
             </TabItem>
         </TabControl>
     </Grid>
